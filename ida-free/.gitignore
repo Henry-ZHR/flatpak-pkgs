@@ -1,0 +1,5 @@
+*.run
+*.hexlic
+builddir/
+repo/
+.flatpak-builder/

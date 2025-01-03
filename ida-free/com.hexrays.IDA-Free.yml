@@ -1,0 +1,40 @@
+id: com.hexrays.IDA-Free
+runtime: org.freedesktop.Platform
+runtime-version: "24.08"
+sdk: org.freedesktop.Sdk
+command: ida
+separate-locales: false
+finish-args:
+  - --persist=.idapro
+  - --share=network
+  - --socket=x11
+  - --share=ipc
+  - --env=LD_LIBRARY_PATH=/usr/lib:/app/lib:/app/ida-free
+  - --filesystem=xdg-documents/IDA
+modules:
+  - name: ida
+    buildsystem: simple
+    build-commands:
+      - chmod +x ida-free-pc_90_x64linux.run
+      - ./ida-free-pc_90_x64linux.run --mode unattended --prefix /app/ida-free
+      - install -Dm644 ida-free.desktop /app/share/applications/com.hexrays.IDA-Free.desktop
+      - install -Dm644 /app/ida-free/appico.png /app/share/icons/hicolor/128x128/apps/com.hexrays.IDA-Free.png
+      - install -d /app/bin && ln -s ../ida-free/ida /app/bin/ida
+    sources:
+      - type: file
+        path: ./ida-free-pc_90_x64linux.run
+      - type: file
+        path: ida-free.desktop
+  - name: kerberos
+    buildsystem: simple
+    build-commands:
+      - tar xf krb5-1.21.3.tar.gz
+      - cd krb5-1.21.3/src && ./configure --prefix=/app
+      - cd krb5-1.21.3/src && make -j $(nproc)
+      - cd krb5-1.21.3/src && make install
+    cleanup:
+      - krb5-1.21.3
+    sources:
+      - type: file
+        url: https://web.mit.edu/kerberos/dist/krb5/1.21/krb5-1.21.3.tar.gz
+        sha256: 6e26ce74fcef3d369e74bfe609f2c9ff75615976959f4c0e510543fc8b09615d

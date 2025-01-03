@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Exec=/app/ida-free/ida %f
-Name=IDA
-Comment=The Interactive Disassembler
+Name=IDA Free
+Comment=Interactive Disassembler Professional
 Icon=com.hexrays.IDA-Free
 Terminal=false

@@ -15,17 +15,18 @@ modules:
   - name: ida
     buildsystem: simple
     build-commands:
-      - chmod +x ida-free-pc_90_x64linux.run
-      - ./ida-free-pc_90_x64linux.run --mode unattended --prefix /app/ida-free
+      - chmod +x ida-free-pc_90sp1_x64linux.run
+      # The installer tries to write a desktop file, just ignore it
+      - mkdir -p /tmp/.local/share/applications && HOME=/tmp ./ida-free-pc_90sp1_x64linux.run --mode unattended --prefix /app/ida-free
       - install -Dm644 ida-free.desktop /app/share/applications/com.hexrays.IDA-Free.desktop
       - install -Dm644 /app/ida-free/appico.png /app/share/icons/hicolor/128x128/apps/com.hexrays.IDA-Free.png
       - install -d /app/bin && ln -s ../ida-free/ida /app/bin/ida
     sources:
       - type: file
-        path: ./ida-free-pc_90_x64linux.run
+        path: ida-free-pc_90sp1_x64linux.run
       - type: file
         path: ida-free.desktop
-  - name: kerberos
+  - name: krb5
     buildsystem: simple
     build-commands:
       - tar xf krb5-1.21.3.tar.gz

@@ -9,9 +9,18 @@ finish-args:
   - --share=network
   - --socket=x11
   - --share=ipc
-  - --env=LD_LIBRARY_PATH=/usr/lib:/app/lib:/app/ida-free
   - --filesystem=xdg-documents/IDA
 modules:
+  - name: krb5
+    # Why no docs about how to use this??
+    # https://github.com/flatpak/flatpak-builder/blob/f2d0567199ef725850f78a924eb8f976ef1a38a9/src/builder-module.c#L1638
+    buildsystem: autotools
+    subdir: src
+    sources:
+      - type: archive
+        url: https://web.mit.edu/kerberos/dist/krb5/1.21/krb5-1.21.3.tar.gz
+        disable-http-decompression: true
+        sha256: b7a4cd5ead67fb08b980b21abd150ff7217e85ea320c9ed0c6dadd304840ad35
   - name: ida
     buildsystem: simple
     build-commands:
@@ -26,16 +35,3 @@ modules:
         path: ida-free-pc_90sp1_x64linux.run
       - type: file
         path: ida-free.desktop
-  - name: krb5
-    buildsystem: simple
-    build-commands:
-      - tar xf krb5-1.21.3.tar.gz
-      - cd krb5-1.21.3/src && ./configure --prefix=/app
-      - cd krb5-1.21.3/src && make -j $(nproc)
-      - cd krb5-1.21.3/src && make install
-    cleanup:
-      - krb5-1.21.3
-    sources:
-      - type: file
-        url: https://web.mit.edu/kerberos/dist/krb5/1.21/krb5-1.21.3.tar.gz
-        sha256: 6e26ce74fcef3d369e74bfe609f2c9ff75615976959f4c0e510543fc8b09615d
